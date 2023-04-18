@@ -2,7 +2,7 @@
 
 Este pequeno projeto faz parte do material diático da Disciplina **Frontend** 
 
-O objetivo aqui é ilutsrar o conteúdo apresentado na terceira aula.
+O objetivo aqui é criar um front end que permita acessar as APIs desenvolvidas no backend.
 
 ---
 ## Como executar
