@@ -8,3 +8,5 @@ O objetivo aqui é criar um front end que permita acessar as APIs desenvolvidas 
 ## Como executar
 
 Basta fazer o download do projeto e abrir o arquivo index.html no seu browser.
+
+Nova atualização 17/04/23
