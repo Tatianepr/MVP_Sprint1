@@ -1,0 +1,174 @@
+/* Estilo do body */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Estilo do header */
+header {
+  background-image: url('img/bg1.jpg');
+  background-size: cover;
+  color: white;
+  padding: 2px 0;
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+header h1 {
+  font-size: 36px;
+  display: inline-block;
+  padding: 6px 12px;
+  position: sticky;
+  top: 0px;
+  border: 4px solid white;
+  border-radius: 20px;
+}
+
+/* permite seções lado a lado*/
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/*estilo das seções de saldo*/
+
+.saldo-section {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-top: 30px;
+  padding: 20px;
+  flex-basis: 15%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  font-weight: bold;
+}
+
+.saldo-section table {
+  border-collapse: collapse;
+
+
+}
+
+.saldo-section td {
+  text-align: center;
+  padding: 10px;
+}
+
+.saldo-positivo {
+  color: green;
+}
+
+.saldo-negativo {
+  color: red;
+}
+
+/* Estilo do form */
+.form-section form {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  flex-basis: 60%;
+  margin-top: 30px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.form-section form label {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.form-section form input[type="text"],
+form input[type="date"],
+form input[type="number"] {
+  display: inline-block;
+  width: 200px;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.form-section form button[type="submit"] {
+  background-color: #525455;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-section form button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+/* Estilo da tabela de despesas cadastradas */
+.table-section {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-top: 30px;
+  padding: 20px;
+  width: 100%;
+  clear: both;
+}
+
+.table-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-section th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.table-section tr:nth-child(even) {
+  background-color: #f2f2f2
+}
+
+.table-section td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.table-section td:first-child {
+  text-align: left;
+}
+
+
+.table-section td img {
+  width: 30px;
+  height: 30px;
+}
+
+.exclusao:hover {
+  content: url('img/excluir_vermelho.png');
+}
+
+
+/* Estilo dos botões */
+button {
+  background-color: #ddd;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #bbb;
+}
