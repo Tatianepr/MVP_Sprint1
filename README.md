@@ -9,9 +9,9 @@ O objetivo aqui é criar um front end que permita acessar as APIs desenvolvidas 
 1) cadastro de despesas por nome, data de vencimento e valor;
 2) listagem de todas as despesas cadastradas. 
 3) Aplicação destaca em vermelho as despesas não pagas e vencidas;
-4) Indicador com <img src="img/ok.png" height="20px" width="20px"> para despesas pagas;
-5) Indicador com <img src="img/not-ok.png" height="20px" width="20px"> para despesas não pagas;
-6) Botão <img src="img/excluir_preto.png" height="20px" width="20px"> para exclusão de despesas.
+4) Indicador de despesas pagas <img src="img/ok.png" height="20px" width="20px"> e não pagas <img src="img/not-ok.png" height="20px" width="20px">;
+5) Ao clicar nos indicadores acima, é possível atualizar o status de pagamento;
+6) Botão <img src="img/excluir_preto.png" height="20px" width="20px"> / <img src="img/excluir_vermelho.png" height="20px" width="20px">  para exclusão de despesas.
 7) A aplicação também indica os totais de despesas pagas, não pagas e atrasadas. 
 
 # Preview
