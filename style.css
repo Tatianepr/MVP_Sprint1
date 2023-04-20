@@ -39,18 +39,15 @@ main {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   margin-top: 30px;
   padding: 20px;
-  flex-basis: 15%;
+  flex-basis: 20%;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: start;
-  font-weight: bold;
 }
 
 .saldo-section table {
   border-collapse: collapse;
-
-
 }
 
 .saldo-section td {
@@ -135,6 +132,10 @@ form input[type="number"] {
 
 .table-section tr:nth-child(even) {
   background-color: #f2f2f2
+}
+
+.table-section tr.vencida {
+  color: red;
 }
 
 .table-section td {

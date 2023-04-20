@@ -2,6 +2,7 @@ const form = document.querySelector('#form-despesa');
 const tabela = document.querySelector('#tabela-despesas tbody');
 let pg_pendente = 0;
 let pg_pago = 0;
+let pg_vencidas = 0;
 
 const getList = async () => {
   let url = 'http://127.0.0.1:5000/despesas';
@@ -12,7 +13,7 @@ const getList = async () => {
     .then((data) => {
       data.despesas.forEach(item => {
         exibirDespesas(item);
-        somaSaldo(item.valor, item.pago);
+        somaSaldo(item);
       });
       atualizarTotal();
     })
@@ -32,12 +33,20 @@ const exibirDespesas = (despesa) => {
 
   descricaoCell.innerHTML = despesa.descricao;
   valorCell.innerHTML = 'R$ ' + despesa.valor.toFixed(2);
-  vencimentoCell.innerHTML = despesa.data_vencimento;
-  /*pagoCell.innerHTML = `<input type="checkbox" ${despesa.pago ? 'checked' : ''}>`;
-  pagoCell.innerHTML = `<img id="pagou" ${despesa.pago ? 'src="img/check.png"' : 'src="img/warn.png"'}>`;
-  excluirCell.innerHTML = '<img id="exclui" class="exclusao" src="img/excluir_preto.png" alt="Botão de lixeira">';*/
 
-  pagoCell.innerHTML = `<a href="#"><img id="pagou" ${despesa.pago ? 'src="img/check.png"' : 'src="img/warn.png"'}></a>`;
+  let data = despesa.data_vencimento
+  let partes = data.split('/');
+
+  let vencimento = new Date(partes[2], partes[1] - 1, partes[0]);
+  let hoje = new Date();
+
+
+  if ((vencimento < hoje) && (!despesa.pago)) {
+    row.classList.add('vencida');
+  }
+
+  vencimentoCell.innerHTML = despesa.data_vencimento;
+  pagoCell.innerHTML = `<a href="#"><img id="pagou-${despesa.descricao}" class="pago-img" ${despesa.pago ? 'src="img/ok.png"' : 'src="img/not-ok.png"'}></a>`;
   excluirCell.innerHTML = '<a href="#"><img class="exclusao" src="img/excluir_preto.png" alt="Botão de lixeira"></a>';
 
   excluirCell.addEventListener('click', function () {
@@ -76,7 +85,7 @@ const postItem = async (inputDescricao, inpuValor, inputVencimento, inputPago) =
       };
 
       exibirDespesas(novaDespesa);
-      somaSaldo(novaDespesa.valor, novaDespesa.pago);
+      somaSaldo(novaDespesa.valor, novaDespesa.pago, novaDespesa.data_vencimento);
       form.reset();
       return response.json()
     })
@@ -121,16 +130,15 @@ function excluirDespesa(nomeItem) {
         linha.parentNode.removeChild(linha);
       }
     });
-
   }
 
 }
 
 const pagaitem = (nomeItem) => {
   console.log(nomeItem)
-  let url = 'http://127.0.0.1:5000/atualiza?descricao=' + nomeItem;
+  let url = 'http://127.0.0.1:5000/despesa?descricao=' + nomeItem;
   fetch(url, {
-    method: 'get'
+    method: 'put'
   })
     .then((response) => response.json())
     .catch((error) => {
@@ -140,26 +148,46 @@ const pagaitem = (nomeItem) => {
 
 function marcarComoPaga(nomeItem) {
   pagaitem(nomeItem.descricao);
-  /*exibirDespesas(nomeItem);*/
-  somaSaldo(nomeItem.valor, nomeItem.pago);
+  somaSaldo(nomeItem);
+
+  const pago = nomeItem.pago;
+  nomeItem.pago = !pago;
+  const pagoImg = document.querySelector(`#pagou-${nomeItem.descricao}`);
+  if (pagoImg) {
+    pagoImg.src = nomeItem.pago ? 'img/ok.png' : 'img/not-ok.png';
+  }
 }
 
 function atualizarTotal() {
   const total = document.querySelector('#total');
   const total_pago = document.querySelector('#total-pago');
+  const total_pend = document.querySelector('#total-pend');
   total.textContent = pg_pendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   total.className = 'saldo-negativo';
+  total_pend.textContent = pg_vencidas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  total_pend.className = 'saldo-negativo';
   total_pago.textContent = pg_pago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   total_pago.className = 'saldo-positivo';
 }
 
-function somaSaldo(valor, pago) {
-  if (!pago) {
-    pg_pendente += valor;
+function somaSaldo(despesa) {
+
+  let venc = despesa.data_vencimento
+  let parte = venc.split('/');
+  let venceu = new Date(parte[2], parte[1] - 1, parte[0]);
+  let agora = new Date();
+
+  if (!despesa.pago) {
+    if (venceu < agora) {
+      pg_vencidas += despesa.valor
+    } else {
+      pg_pendente += despesa.valor;
+    }
   }
   else {
-    pg_pago += valor;
+    pg_pago += despesa.valor;
   }
 }
 atualizarTotal();
 form.addEventListener('submit', adicionarDespesa);
+
