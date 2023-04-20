@@ -173,3 +173,10 @@ button {
 button:hover {
   background-color: #bbb;
 }
+
+.footer {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  color: #bbb;
+  text-align: center;
+}

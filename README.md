@@ -1,6 +1,6 @@
 # Meu Front
 
-Este pequeno projeto faz parte do projeto de um aplicativo de **controle de despesas** desenvolvido como trabalho final "MVP" da Sprint 1 do curso de pós graduação da PUC Rio.
+Este pequeno projeto faz parte do projeto de um aplicativo de **XXXXX** desenvolvido como trabalho final "XXXX" da Sprint XXXX do curso de pós graduação da XXXXX.
 
 O objetivo aqui é criar um front end que permita acessar as APIs desenvolvidas no backend.
 
