@@ -3,9 +3,11 @@ const tabela = document.querySelector('#tabela-despesas tbody');
 let pg_pendente = 0;
 let pg_pago = 0;
 let pg_vencidas = 0;
+//const dominio = "http://127.0.0.1:5000"
+const dominio = "https://finance-tati.onrender.com"
 
 const getList = async () => {
-  let url = 'http://127.0.0.1:5000/despesas';
+  let url = dominio + '/despesas';
   fetch(url, {
     method: 'get',
   })
@@ -68,7 +70,7 @@ const postItem = async (inputDescricao, inpuValor, inputVencimento, inputPago) =
   formData.append('data_vencimento', inputVencimento);
   formData.append('pago', inputPago);
 
-  let url = 'http://127.0.0.1:5000/despesa';
+  let url = dominio + '/despesa';
   fetch(url, {
     method: 'post',
     body: formData
@@ -78,14 +80,14 @@ const postItem = async (inputDescricao, inpuValor, inputVencimento, inputPago) =
         alert("Já existe");
       }
       const novaDespesa = {
-        descricao: descricao,
-        valor: valor,
-        data_vencimento: dataVencimento,
-        pago: paga
+        descricao: inputDescricao,
+        valor: inpuValor,
+        data_vencimento: inputVencimento,
+        pago: inputPago
       };
 
       exibirDespesas(novaDespesa);
-      somaSaldo(novaDespesa.valor, novaDespesa.pago, novaDespesa.data_vencimento);
+      somaSaldo(novaDespesa);
       form.reset();
       return response.json()
     })
@@ -109,7 +111,7 @@ function adicionarDespesa(evento) {
 
 const deleteItem = (nomeItem) => {
   console.log(nomeItem)
-  let url = 'http://127.0.0.1:5000/despesa?descricao=' + nomeItem;
+  let url = dominio + '/despesa?descricao=' + nomeItem;
   fetch(url, {
     method: 'delete'
   })
@@ -136,7 +138,7 @@ function excluirDespesa(nomeItem) {
 
 const pagaitem = (nomeItem) => {
   console.log(nomeItem)
-  let url = 'http://127.0.0.1:5000/despesa?descricao=' + nomeItem;
+  let url = dominio + '/despesa?descricao=' + nomeItem;
   fetch(url, {
     method: 'put'
   })
