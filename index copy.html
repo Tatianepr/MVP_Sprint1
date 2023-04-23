@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle de Despesas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <h1>Controle de Despesas</h1>
+  </header>
+  <main>
+    <section class="contas contas-total">
+      <table>
+        <tr>
+          <td><img src="img/money-bag.png" width="60px"></td>
+          <td>
+            <table>
+              <tr>
+                <td>Contas Total</td>
+              </tr>
+              <tr>
+                <td>______________</td>
+              </tr>
+              <tr>
+                <td id="total"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section class="contas contas-apagar">
+      <table>
+        <tr>
+          <td><img src="img/money-bag.png" width="60px"></td>
+          <td>
+            <table>
+              <tr>
+                <td>Contas a Pagar</td>
+              </tr>
+              <tr>
+                <td>______________</td>
+              </tr>
+              <tr>
+                <td id="total-apagar"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section class="contas contas-pagas">
+      <table>
+        <tr>
+          <td><img src="img/money-bag.png" width="60px"></td>
+          <td>
+            <table>
+              <tr>
+                <td>Contas Pagas</td>
+              </tr>
+              <tr>
+                <td>______________</td>
+              </tr>
+              <tr>
+                <td id="total-pagas"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section class="contas contas-atrasadas">
+      <table>
+        <tr>
+          <td><img src="img/money-bag.png" width="60px"></td>
+          <td>
+            <table>
+              <tr>
+                <td>Contas Atrasadas</td>
+              </tr>
+              <tr>
+                <td>______________</td>
+              </tr>
+              <tr>
+                <td id="total-atrasadas"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section class="form-section">
+      <form id="form-despesa">
+        <table>
+          <tr>
+            <td><label for="descricao">Descrição:</label></td>
+            <td><label for="data">Vencimento:</label></td>
+            <td><label for="valor">Valor:</label></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><input type="text" id="descricao" required></td>
+            <td><input type="number" id="valor" name="valor" step="0.01" min="0" required></td>
+            <td><input type="date" id="data-vencimento" required></td>
+          </tr>
+          <tr>
+            <td><button type="submit">Cadastrar</button></td>
+            <td colspan="2" id="alerta" class="alerta"></td>
+          </tr>
+        </table>
+      </form>
+    </section>
+
+    <section class="table-section">
+      <table id="tabela-despesas">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Vencimento</th>
+            <th>Status</th>
+            <th colspan="2">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- dados das despesas aqui -->
+            <tr>
+              <td contenteditable>Consulta</td>
+              <td contenteditable>R$ 100,00</td>
+              <td contenteditable>21/04/2023</td>
+              <td><h3><span class="badge bg-pagas">Paga</span></h3></td>
+              <td>
+                <a href="#" class='tblDelBtnu' title="Editar"><i id="edit" onclick="editRow(this)">&nbsp;&#10003;&nbsp;</i>
+                <a href="#" class='tblDelBtnu' title="Desfazer Pagamento"><i id="edit">&nbsp;&#36;&nbsp;</i></a> 
+                <a href="#" class="tblDelBtnx" title="Excluir Despesa">&nbsp; <i id="exclur">&nbsp;X&nbsp;</i></a>
+              
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </section>
+    <a href="#" class="tblDelBtn"><i title="Pagar" id="edit">&nbsp;&nbsp;&#36;&nbsp;&nbsp;</i></a>
+    <a href="#" class="tblDelBtnu" title="Desfazer pagamento"><i id="edit">&nbsp&nbsp;&#36;&nbsp;&nbsp;</i></a>
+  </main>
+  <script src="app.js"></script>
+  <footer>
+    <p class="footer">© 2023 - Tatiane Rodrigues - Todos os Direitos reservados</p>
+  </footer>
+</body>
+
+</html>

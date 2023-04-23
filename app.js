@@ -1,10 +1,11 @@
 const form = document.querySelector('#form-despesa');
 const tabela = document.querySelector('#tabela-despesas tbody');
-let pg_pendente = 0;
-let pg_pago = 0;
-let pg_vencidas = 0;
-//const dominio = "http://127.0.0.1:5000"
-const dominio = "https://finance-tati.onrender.com"
+let pg_apagar = 0;
+let pg_pagas = 0;
+let pg_atrasadas = 0;
+let pg_total = 0
+const dominio = "http://127.0.0.1:5000"
+//const dominio = "https://finance-tati.onrender.com"
 
 const getList = async () => {
   let url = dominio + '/despesas';
@@ -14,6 +15,7 @@ const getList = async () => {
     .then((response) => response.json())
     .then((data) => {
       data.despesas.forEach(item => {
+        /*console.log(item);*/
         exibirDespesas(item);
         somaSaldo(item);
       });
@@ -27,12 +29,18 @@ const getList = async () => {
 const exibirDespesas = (despesa) => {
 
   const row = tabela.insertRow();
-  const descricaoCell = row.insertCell(0);
-  const valorCell = row.insertCell(1);
-  const vencimentoCell = row.insertCell(2);
-  const pagoCell = row.insertCell(3);
-  const excluirCell = row.insertCell(4);
+  const id = row.insertCell(0);
+  const descricaoCell = row.insertCell(1);
+  const valorCell = row.insertCell(2);
+  const vencimentoCell = row.insertCell(3);
+  const pagoCell = row.insertCell(4);
+  const acoesCell = row.insertCell(5);
 
+  let botao_status = '';
+  let estilo_pago = '';
+  let texto = '';
+
+  id.innerHTML = despesa.id;
   descricaoCell.innerHTML = despesa.descricao;
   valorCell.innerHTML = 'R$ ' + despesa.valor.toFixed(2);
 
@@ -42,22 +50,42 @@ const exibirDespesas = (despesa) => {
   let vencimento = new Date(partes[2], partes[1] - 1, partes[0]);
   let hoje = new Date();
 
-
-  if ((vencimento < hoje) && (!despesa.pago)) {
-    row.classList.add('vencida');
+  if (!despesa.pago) {
+    if (vencimento < hoje) {
+      botao_status = '<h3><span class="badge bg-atrasadas">Atrasada</span></h3>';
+      estilo_pago = 'tblDelBtn';
+      texto = 'Pagar';
+    }
+    else {
+      botao_status = '<h3><span class="badge bg-apagar">A pagar</span></h3>';
+      estilo_pago = 'tblDelBtn';
+      texto = 'Pagar';
+    }
+  }
+  else {
+    botao_status = '<h3><span class="badge bg-pagas">Paga</span></h3>';
+    estilo_pago = 'tblDelBtnu';
+    texto = 'Desfazer Pagamento';
   }
 
   vencimentoCell.innerHTML = despesa.data_vencimento;
-  pagoCell.innerHTML = `<a href="#"><img id="pagou-${despesa.descricao}" class="pago-img" ${despesa.pago ? 'src="img/ok.png"' : 'src="img/not-ok.png"'}></a>`;
-  excluirCell.innerHTML = '<a href="#"><img class="exclusao" src="img/excluir_preto.png" alt="Botão de lixeira"></a>';
+  pagoCell.innerHTML = botao_status;
+  acoesCell.innerHTML = '<a href="#" class="tblDelBtne" title="Editar"><i id="edi">&#128393;</i></a><a href="#"  class=' + estilo_pago + ' title="' + texto + '">&nbsp; <i id="edit" >&nbsp;&#36;&nbsp;</i></a> <a href="#" class="tblDelBtnx" title="Excluir Despesa">&nbsp; <i id="exclur">&nbsp;X&nbsp;</i></a>';
 
-  excluirCell.addEventListener('click', function () {
-    excluirDespesa(despesa);
+  acoesCell.addEventListener('click', function (event) {
+    console.log(event.target.innerText);
+    if (event.target.tagName === 'I') {
+      if (event.target.innerText == '\xa0\u0024\xa0') {
+        marcarComoPaga(despesa);
+      } else if (event.target.innerText === '\xa0X\xa0') {
+        excluirDespesa(despesa);
+      } else {
+        console.log("chama editrow na exibir despesas");
+        editRow(this, despesa);
+      }
+    }
   });
 
-  pagoCell.addEventListener('click', function () {
-    marcarComoPaga(despesa);
-  });
 
 }
 
@@ -77,7 +105,8 @@ const postItem = async (inputDescricao, inpuValor, inputVencimento, inputPago) =
   })
     .then((response) => {
       if (response.status == 409) {
-        alert("Já existe");
+        //alert("Despesa já existe");
+        document.getElementById("alerta").innerHTML = "Despesa já existe";
       }
       const novaDespesa = {
         descricao: inputDescricao,
@@ -138,7 +167,7 @@ function excluirDespesa(nomeItem) {
 
 const pagaitem = (nomeItem) => {
   console.log(nomeItem)
-  let url = dominio + '/despesa?descricao=' + nomeItem;
+  let url = dominio + '/paga?descricao=' + nomeItem;
   fetch(url, {
     method: 'put'
   })
@@ -161,15 +190,21 @@ function marcarComoPaga(nomeItem) {
 }
 
 function atualizarTotal() {
+
   const total = document.querySelector('#total');
-  const total_pago = document.querySelector('#total-pago');
-  const total_pend = document.querySelector('#total-pend');
-  total.textContent = pg_pendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  total.className = 'saldo-negativo';
-  total_pend.textContent = pg_vencidas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  total_pend.className = 'saldo-negativo';
-  total_pago.textContent = pg_pago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  total_pago.className = 'saldo-positivo';
+  const total_apagar = document.querySelector('#total-apagar');
+  const total_pagas = document.querySelector('#total-pagas');
+  const total_atrasadas = document.querySelector('#total-atrasadas');
+
+  total.textContent = pg_total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  //total.className = 'saldo-negativo';
+
+  total_apagar.textContent = pg_apagar.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  total_atrasadas.textContent = pg_atrasadas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  //total_pend.className = 'saldo-negativo';
+  total_pagas.textContent = pg_pagas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  //total_pago.className = 'saldo-positivo';
 }
 
 function somaSaldo(despesa) {
@@ -181,15 +216,94 @@ function somaSaldo(despesa) {
 
   if (!despesa.pago) {
     if (venceu < agora) {
-      pg_vencidas += despesa.valor
+      pg_atrasadas += despesa.valor
     } else {
-      pg_pendente += despesa.valor;
+      pg_apagar += despesa.valor;
     }
   }
   else {
-    pg_pago += despesa.valor;
+    pg_pagas += despesa.valor;
   }
+  pg_total = pg_pagas + pg_apagar + pg_atrasadas;
 }
 atualizarTotal();
 form.addEventListener('submit', adicionarDespesa);
+
+function editRow(btn, despesa) {
+  var row = btn.parentNode;
+  console.log(btn.parentNode);
+
+  var cells = row.getElementsByTagName("td");
+
+  Array.from(cells).forEach((cell, i) => {
+    var value = cell.innerHTML;
+
+    if (i == 0) {
+      cell.innerHTML = "<input type='number' id='id_descricao' disabled value='" + value + "'/>";
+    }
+    else if (i == 1) {
+      cell.innerHTML = "<input type='text' id='valor_descricao' value='" + value + "'/>";
+    } else if (i == 2) {
+      const input = document.querySelector('input[type="number"]');
+      const valorSemCifrao = value.replace(/^R\$ /, '');
+      cell.innerHTML = "<input type='number' step='0.01' min='0'  id='valor_real' value='" + valorSemCifrao + "'/>";
+    } else if (i == 3) {
+
+      var data = new Date(Date.parse(value.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$2/$1/$3")))
+      var ano = data.getFullYear();
+      var mes = ("0" + (data.getMonth() + 1)).slice(-2);
+      var dia = ("0" + data.getDate()).slice(-2);
+      var data_formatada = ano + "-" + mes + "-" + dia;
+      cell.innerHTML = "<input type='date' id='valor_data' value='" + data_formatada + "'/>";
+
+    } else if (i == 5) {
+      cell.innerHTML = '<button id="salvar" class="form-section form button" type="submit">Salvar</button>';
+      /*cell.innerHTML = '<a href="#" class="tblDelBtne" title="salvar"><i id="salvar">Salvar</i></a>';*/
+    }
+  });
+
+  document.getElementById("salvar").addEventListener('click', function (event) {
+    var inputs = row.getElementsByTagName("input");
+
+    console.log("quantidade de inputs: " + inputs.length);
+    var valores = [];
+
+    for (var i = 0; i < inputs.length; i++) {
+      valores.push(inputs[i].value);
+
+      /*cells[i].innerHTML = inputs[i].value;*/
+    }
+
+    console.log("valores:", valores);
+    salva_despesa(valores);
+  });
+}
+
+function salva_despesa(valores) {
+
+  console.log("valores após chamar função salva_despesa: " + valores);
+  let id = valores[0];
+  let descricao = valores[1];
+  let valor = valores[2];
+  let dataVencimento = valores[3];
+  console.log("ID: " + id);
+  console.log("descrição: " + descricao);
+  console.log("Valor: " + valor);
+  console.log("Vencimento: " + dataVencimento);
+
+
+  let url = dominio + '/despesa?id=' + id + '&descricao=' + descricao + '&valor=' + valor + '&data_vencimento=' + dataVencimento;
+  fetch(url, {
+    method: 'put'
+  })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}
+
+/*retorno = postItem(id, descricao, valor, dataVencimento, paga)*/
+
+
+
 

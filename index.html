@@ -13,64 +13,118 @@
     <h1>Controle de Despesas</h1>
   </header>
   <main>
-    <section class="saldo-section">
+    <section class="contas contas-total">
       <table>
         <tr>
-          <td>Despesas pendentes</td>
-        </tr>
-        <tr>
-          <td id="total"></td>
-        </tr>
-        <tr>
-          <td>Despesas atrasadas</td>
-        </tr>
-        <tr>
-          <td id="total-pend"></td>
+          <td><img src="img/money-bag.png" width="60px"></td>
+          <td>
+            <table>
+              <tr>
+                <td>Contas Total</td>
+              </tr>
+              <tr>
+                <td>______________</td>
+              </tr>
+              <tr>
+                <td id="total"></td>
+              </tr>
+            </table>
+          </td>
         </tr>
       </table>
     </section>
-
+    <section class="contas contas-apagar">
+      <table>
+        <tr>
+          <td><img src="img/money-bag.png" width="60px"></td>
+          <td>
+            <table>
+              <tr>
+                <td>Contas a Pagar</td>
+              </tr>
+              <tr>
+                <td>______________</td>
+              </tr>
+              <tr>
+                <td id="total-apagar"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section class="contas contas-pagas">
+      <table>
+        <tr>
+          <td><img src="img/money-bag.png" width="60px"></td>
+          <td>
+            <table>
+              <tr>
+                <td>Contas Pagas</td>
+              </tr>
+              <tr>
+                <td>______________</td>
+              </tr>
+              <tr>
+                <td id="total-pagas"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section class="contas contas-atrasadas">
+      <table>
+        <tr>
+          <td><img src="img/money-bag.png" width="60px"></td>
+          <td>
+            <table>
+              <tr>
+                <td>Contas Atrasadas</td>
+              </tr>
+              <tr>
+                <td>______________</td>
+              </tr>
+              <tr>
+                <td id="total-atrasadas"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </section>
     <section class="form-section">
       <form id="form-despesa">
         <table>
           <tr>
             <td><label for="descricao">Descrição:</label></td>
-            <td><input type="text" id="descricao" required></td>
-          </tr>
-          <tr>
-            <td><label for="valor">Valor:</label></td>
-            <td><input type="number" id="valor" name="valor" step="0.01" min="0" required></td>
-          </tr>
-          <tr>
             <td><label for="data">Vencimento:</label></td>
+            <td><label for="valor">Valor:</label></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><input type="text" id="descricao" required></td>
+            <td><input type="number" id="valor" name="valor" step="0.01" min="0" required></td>
             <td><input type="date" id="data-vencimento" required></td>
           </tr>
           <tr>
-            <td></td>
             <td><button type="submit">Cadastrar</button></td>
+            <td colspan="2" id="alerta" class="alerta"></td>
           </tr>
         </table>
       </form>
     </section>
-    <section class="saldo-section">
-      <table>
-        <tr>
-          <td>Despesas pagas</td>
-        </tr>
-        <tr>
-          <td id="total-pago"></td>
-        </tr>
-      </table>
-    </section>
+
     <section class="table-section">
       <table id="tabela-despesas">
         <thead>
           <tr>
+            <th># ID</th>
             <th>Descrição</th>
             <th>Valor</th>
             <th>Vencimento</th>
-            <th>Pago</th>
-            <th>Excluir </th>
+            <th>Status</th>
+            <th colspan="2">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -78,8 +132,7 @@
         </tbody>
       </table>
     </section>
-
-  </main>
+     </main>
   <script src="app.js"></script>
   <footer>
     <p class="footer">© 2023 - Tatiane Rodrigues - Todos os Direitos reservados</p>
