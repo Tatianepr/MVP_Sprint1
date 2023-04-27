@@ -8,19 +8,21 @@ https://financetati.onrender.com/
 
 # Principais Funcionalidades
 
-<p> 1) cadastro de despesas por nome, data de vencimento e valor;</p>
-<p> 2) listagem de todas as despesas cadastradas; </p>
-<p> 3) Aplicação destaca em status de pagamento das despesas: <img src="img/preview-paga.jpg">, <img src="img/preview-atrasada.jpg">, <img src="img/preview-apagar.jpg">;</p>
-<p> 4) Botões para EDITAR, PAGAR/NÃO PAGAR e EXCLUIR uma despesa: <img src="img/preview-acoes.jpg">; </p>
-<p> 5) A aplicação também indica os totais de contas cadastradas, a pagar, contas pagas e atrasadas pagas. </p>
+<p> 1) cadastro de despesas por nome, data de vencimento, categoria e valor;</p>
+<p> 2) Opção para incluir novas categorias;</p>
+<p> 3) listagem de todas as despesas cadastradas; </p>
+<p> 4) Aplicação destaca em status de pagamento das despesas: <img src="img/preview-paga.jpg">, <img src="img/preview-atrasada.jpg">, <img src="img/preview-apagar.jpg">;</p>
+<p> 5) Botões para EDITAR, PAGAR/NÃO PAGAR e EXCLUIR uma despesa: <img src="img/preview-acoes.jpg">; <img src="img/preview-salvar.jpg"></p>
+<p> 6) A aplicação também indica os totais de contas cadastradas, a pagar, contas pagas e atrasadas pagas. </p>
 
 # Preview
 
-<img src="img/preview.jpg" height="440x" width="635px">
+<img src="img/preview.jpg" width="635px">
 
+<img src="img/preview2.jpg" width="635px">
 
 # Como executar
 
 Basta fazer o download do projeto e abrir o arquivo index.html no seu browser.
 
-última atualização 23/04/23
+última atualização 27/04/23

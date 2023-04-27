@@ -98,20 +98,36 @@
         <table>
           <tr>
             <td><label for="descricao">Descrição:</label></td>
-            <td><label for="data">Vencimento:</label></td>
-            <td><label for="valor">Valor:</label></td>
+            <td>
+              <lable for="categoria">Categoria</lable>
+            </td>
+            <td><label for="data">Valor:</label></td>
+            <td><label for="valor">Vencimento:</label></td>
             <td></td>
           </tr>
           <tr>
             <td><input type="text" id="descricao" required></td>
+            <td><select id="categoria">
+                <option value="">Selecione uma categoria</option>
+              </select>
+
+            </td>
             <td><input type="number" id="valor" name="valor" step="0.01" min="0" required></td>
             <td><input type="date" id="data-vencimento" required></td>
           </tr>
           <tr>
-            <td><button type="submit">Cadastrar</button></td>
+            <td><button type="submit">Cadastrar</button>
+              <button type="button" onclick="mostrarInput()">Nova Categoria</button>
+            </td>
             <td colspan="2" id="alerta" class="alerta"></td>
           </tr>
         </table>
+      </form>
+      <!-- formulário fica escondido e só é ativado com seleção de nova categoria style="display:none" -->
+      <form id="form-categoria" style="display:none">
+        <label for="inputCampo">Nova Categoria:</label>
+        <input type="text" id="novaCategoria">
+        <button type="button" onclick="adicionarOption()">Criar</button>
       </form>
     </section>
 
@@ -121,10 +137,12 @@
           <tr>
             <th># ID</th>
             <th>Descrição</th>
+            <th>Categoria</th>
             <th>Valor</th>
             <th>Vencimento</th>
             <th>Status</th>
-            <th colspan="2">Ações</th>
+            <th>Ações</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -132,7 +150,7 @@
         </tbody>
       </table>
     </section>
-     </main>
+  </main>
   <script src="app.js"></script>
   <footer>
     <p class="footer">© 2023 - Tatiane Rodrigues - Todos os Direitos reservados</p>
