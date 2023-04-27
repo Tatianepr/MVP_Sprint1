@@ -1,8 +1,8 @@
 # Meu Front
 
-Este pequeno projeto faz parte do projeto de um aplicativo de **XXXXX** desenvolvido como trabalho final "XXXX" da Sprint 01 do curso de pós graduação da PUC Rio.
+Este é o MVP da sprint 01 do curso de **Engenharia de Software** da **PUC-Rio**
 
-O objetivo aqui é criar um front end que permita acessar as APIs desenvolvidas no backend.
+O objetivo aqui é disponibilizar o projeto de fronend para um controle simples de despesas e que funciona com o projeto de backend.
 
 https://financetati.onrender.com/
 
