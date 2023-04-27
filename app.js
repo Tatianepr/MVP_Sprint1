@@ -2,8 +2,8 @@ let pg_apagar = 0;
 let pg_pagas = 0;
 let pg_atrasadas = 0;
 let pg_total = 0
-const dominio = "http://127.0.0.1:5000"
-//const dominio = "https://finance-tati.onrender.com"
+//const dominio = "http://127.0.0.1:5000"
+const dominio = "https://finance-tati.onrender.com"
 const form = document.querySelector('#form-despesa');
 const tabela = document.querySelector('#tabela-despesas tbody');
 
@@ -168,10 +168,13 @@ const exibirDespesas = (despesa) => {
 const postItem = async (inputDescricao, inputCategoria, inpuValor, inputVencimento, inputPago) => {
   const formData = new FormData();
   formData.append('descricao', inputDescricao);
-  formData.append('Categoria', inputCategoria);
+  formData.append('categoria_id', inputCategoria);
   formData.append('valor', inpuValor);
   formData.append('data_vencimento', inputVencimento);
   formData.append('pago', inputPago);
+
+  console.log("nova categoria recebida: ", inputCategoria);
+  console.log(formData);
 
   let url = dominio + '/despesa';
   fetch(url, {
@@ -183,14 +186,16 @@ const postItem = async (inputDescricao, inputCategoria, inpuValor, inputVencimen
         document.getElementById("alerta").innerHTML = "Despesa já existe";
       } else {
         response.json().then((data) => {
-          const novaDespesa = {
+          const novaDespesa = data;
+          /*{
             id: data.id,
             descricao: data.descricao,
             categoria_nome: data.categoria_nome,
             valor: data.valor,
             data_vencimento: data.data_vencimento,
             pago: data.pago
-          };
+          };*/
+          console.log(novaDespesa);
           exibirDespesas(novaDespesa);
           somaSaldo(novaDespesa);
           form.reset();
@@ -207,12 +212,12 @@ function adicionarDespesa(evento) {
   evento.preventDefault();
 
   let descricao = document.querySelector('#descricao').value;
-  let categoria = document.querySelector("#categoria").value;
+  let categoria = document.querySelector("#categoria option:checked").value;
   let valor = parseFloat(document.querySelector('#valor').value);
   let dataVencimento = document.querySelector('#data-vencimento').value;
   let paga = false
 
-  console.log("nova categoria: " + categoria)
+  console.log("nova categoria escolhida: " + categoria)
 
   retorno = postItem(descricao, categoria, valor, dataVencimento, paga)
 }
@@ -415,34 +420,34 @@ function adicionarOption() {
   var categoria = document.getElementById("novaCategoria").value;
   var select = document.getElementById("categoria");
   var option = document.createElement("option");
-    /* adiciona no banco e retorna novos valores*/
+  /* adiciona no banco e retorna novos valores*/
   const formData = new FormData();
   formData.append('nome', categoria);
 
-    let url = dominio + '/categoria';
-    fetch(url, {
-      method: 'post',
-      body: formData
-    })
-      .then((response) => {
-        if (response.status == 409) {
-          document.getElementById("alerta").innerHTML = "Categoria já existe";
-        } else {
-          response.json().then((data) => {
-            const NovaCategoria = {
-              id: data.id,
-              categoria_nome: data.nome,
-            };
-            option.text = data.nome,
+  let url = dominio + '/categoria';
+  fetch(url, {
+    method: 'post',
+    body: formData
+  })
+    .then((response) => {
+      if (response.status == 409) {
+        document.getElementById("alerta").innerHTML = "Categoria já existe";
+      } else {
+        response.json().then((data) => {
+          const NovaCategoria = {
+            id: data.id,
+            categoria_nome: data.nome,
+          };
+          option.text = data.nome,
             option.value = data.id,
             exibirCategorias(NovaCategoria);
-            form.reset();
-          });
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+          form.reset();
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   select.add(option);
   document.getElementById("form-categoria").style.display = "none";
 
