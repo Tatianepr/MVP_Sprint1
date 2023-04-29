@@ -7,7 +7,7 @@ const dominio = "http://127.0.0.1:5000"
 const form = document.querySelector('#form-despesa');
 const tabela = document.querySelector('#tabela-despesas tbody');
 
-
+/* busca despesas cadastradas no banco*/
 const getList = async () => {
   let url = dominio + '/despesas';
   fetch(url, {
@@ -43,6 +43,7 @@ const getCategorias = async () => {
     });
 }
 
+/* exibe categorias caastradas no campo select option */
 const exibirCategorias = (categoria) => {
   const selectCategoria = document.querySelector('#form-despesa select[id="categoria"]');
   const option = document.createElement('option');
@@ -51,29 +52,7 @@ const exibirCategorias = (categoria) => {
   selectCategoria.appendChild(option);
 
 }
-/*
-function EditCategorias(nome) {
-  let url = dominio + '/categorias';
-  fetch(url, {
-    method: 'get',
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      data.categorias.forEach(item => {
-        var option = document.createElement("option");
-        option.text = item.texto;
-        option.valeu = item.id;
-        if (nome == option.text) {
-          option.selected = true;
-        }
-        document.getElementById("valor_categoria").appendChild(option)
-      });
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-*/
+/* define estilo para o status de pagamento das despesas*/
 function statusPago(status, data) {
   let vencimento = data;
   let pago = status
@@ -100,6 +79,7 @@ function statusPago(status, data) {
   return (retorno);
 }
 
+/* exibe uma despesa na lista */
 const exibirDespesas = (despesa) => {
 
   var row = tabela.insertRow();
@@ -165,6 +145,7 @@ const exibirDespesas = (despesa) => {
 
 }
 
+/* cadastra as despesas */
 const postItem = async (inputDescricao, inputCategoria, inpuValor, inputVencimento, inputPago) => {
   const formData = new FormData();
   formData.append('descricao', inputDescricao);
@@ -187,14 +168,6 @@ const postItem = async (inputDescricao, inputCategoria, inpuValor, inputVencimen
       } else {
         response.json().then((data) => {
           const novaDespesa = data;
-          /*{
-            id: data.id,
-            descricao: data.descricao,
-            categoria_nome: data.categoria_nome,
-            valor: data.valor,
-            data_vencimento: data.data_vencimento,
-            pago: data.pago
-          };*/
           console.log(novaDespesa);
           exibirDespesas(novaDespesa);
           somaSaldo(novaDespesa);
@@ -207,7 +180,7 @@ const postItem = async (inputDescricao, inputCategoria, inpuValor, inputVencimen
     });
 }
 
-
+/* adiciona despesa em tela e chama função para adicionar no banco*/
 function adicionarDespesa(evento) {
   evento.preventDefault();
 
@@ -222,7 +195,7 @@ function adicionarDespesa(evento) {
   retorno = postItem(descricao, categoria, valor, dataVencimento, paga)
 }
 
-
+/* deleta despesa do banco*/
 const deleteItem = (nomeItem) => {
   console.log(nomeItem)
   let url = dominio + '/despesa?descricao=' + nomeItem;
@@ -235,6 +208,7 @@ const deleteItem = (nomeItem) => {
     });
 }
 
+/* exclui despesa da tela e chama função para deletar do banco*/
 function excluirDespesa(nomeItem) {
   if (confirm("Você tem certeza?")) {
     deleteItem(nomeItem.descricao);
@@ -249,7 +223,7 @@ function excluirDespesa(nomeItem) {
   }
 
 }
-
+/* atualiza status de pagamento da despesa para pago ou não pago*/
 const pagaitem = (nomeItem) => {
   let url = dominio + '/paga?descricao=' + nomeItem;
   fetch(url, {
@@ -266,7 +240,7 @@ function marcarComoPaga(nomeItem) {
   somaSaldo(nomeItem);
   /*location.reload();*/
 }
-
+/* exibe totais das despesas que aparecem na tela*/
 function atualizarTotal() {
 
   const total = document.querySelector('#total');
@@ -279,7 +253,7 @@ function atualizarTotal() {
   total_atrasadas.textContent = pg_atrasadas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   total_pagas.textContent = pg_pagas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
-
+/* soma os totais das despesas que aparecem na tela*/
 function somaSaldo(despesa) {
 
   let venc = despesa.data_vencimento
@@ -299,7 +273,7 @@ function somaSaldo(despesa) {
   }
   pg_total = pg_pagas + pg_apagar + pg_atrasadas;
 }
-
+/* abre campos de edição de uma despesa na listagem*/
 function editRow(btn, despesa) {
   var row = btn.parentNode;
   var cells = row.getElementsByTagName("td");
@@ -392,7 +366,7 @@ function editRow(btn, despesa) {
     salva_despesa(valores);
   });
 }
-
+/* salva em banco a alteração realizada em uma despesa*/
 function salva_despesa(valores) {
   let id = valores[0];
   let descricao = valores[1];
@@ -411,11 +385,11 @@ function salva_despesa(valores) {
     });
 
 }
-
+/* mostra campo para adicionar uma nova categoria*/
 function mostrarInput() {
   document.getElementById("form-categoria").style.display = "block"
 }
-
+/* inclui nova categoria no select option e no banco*/
 function adicionarOption() {
   var categoria = document.getElementById("novaCategoria").value;
   var select = document.getElementById("categoria");
