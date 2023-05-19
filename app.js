@@ -2,8 +2,8 @@ let pg_apagar = 0;
 let pg_pagas = 0;
 let pg_atrasadas = 0;
 let pg_total = 0
-const dominio = "http://127.0.0.1:5000"
-//const dominio = "https://finance-tati.onrender.com"
+//const dominio = "http://127.0.0.1:5000"
+const dominio = "https://finance-tati.onrender.com"
 const form = document.querySelector('#form-despesa');
 const tabela = document.querySelector('#tabela-despesas tbody');
 
